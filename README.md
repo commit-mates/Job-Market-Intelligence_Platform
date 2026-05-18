@@ -15,7 +15,6 @@ The purpose of this project is to build a scalable **Job Market Intelligence Pla
 The system follows a modern **Lakehouse architecture** using **Bronze, Silver, and Gold** data layers.
 
 ---
-
 ### Scope
 
 The platform will:
