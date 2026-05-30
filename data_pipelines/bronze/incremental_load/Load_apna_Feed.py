@@ -1,21 +1,49 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC ## Load_APNA_Feed
+# MAGIC
+# MAGIC | Metadata | Detail |
+# MAGIC |-----------------------|----------------------|
+# MAGIC | **Created By**        | Sahithi Gudivada      |
+# MAGIC | **Business Logic By** | Yateesh Chandra       |
+# MAGIC | **Load Strategy**     | Append               |
+# MAGIC | **Source**            | Apna API             |
+# MAGIC | **Target**            | jobsintel.bronze.jobs_raw |
+# MAGIC
+# MAGIC ---
+# MAGIC
+# MAGIC ### History
+# MAGIC
+# MAGIC | Date         | Modified By      | Change Log             |
+# MAGIC |--------------|------------------|------------------------|
+# MAGIC | May 30th 2026| Sahithi Gudivada  | Created Initial Version|
+
+# COMMAND ----------
+
+# DBTITLE 1,importing libraries
 import requests
 import json
-from datetime import datetime
 import logging
+from datetime import datetime
 from pyspark.sql.types import StructType, StructField, StringType, TimestampType
 
+# COMMAND ----------
 
-log = logging.getLogger(__name__)
-logger = logging.getLogger("job_ingestion")
-
-# Schema for  jobs_raw table
+# DBTITLE 1,Schema for  jobs_raw table
 schema = StructType([
             StructField("source", StringType(), True),
             StructField("payload", StringType(), True),
             StructField("bd_create_dt_tm", TimestampType(), True),
             StructField("bd_update_dt_tm", TimestampType(), True),
         ])
+
+# COMMAND ----------
+
+URL = "https://production.apna.co/user-profile-orchestrator/public/v1/jobs/?department_id=&work_mode=&work_type=&work_shift=&page=1&page_size=25"
+log = logging.getLogger(__name__)
+logger = logging.getLogger("job_ingestion")
+
+# COMMAND ----------
 
 # Function to ingest data from apnajob jobsite
 def ingest_jobs_to_bronze(url: str):
@@ -69,9 +97,7 @@ def ingest_jobs_to_bronze(url: str):
         raise e
 
 
-# URL for apnajob
-url = "https://production.apna.co/user-profile-orchestrator/public/v1/jobs/?department_id=&work_mode=&work_type=&work_shift=&page=1&page_size=25"
 
-ingest_jobs_to_bronze(url)
+ingest_jobs_to_bronze(URL)
 
 

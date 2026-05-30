@@ -3,61 +3,22 @@
 # [tool.databricks.environment]
 # environment_version = "5"
 # ///
-spark.sql("""
-CREATE DATABASE IF NOT EXISTS jobsintel
-""")
+# MAGIC %md
+# MAGIC ## Create_Bronze_Jobs_Raw
+# MAGIC
+# MAGIC | Date         | Modified By      | Change Log             |
+# MAGIC |--------------|------------------|------------------------|
+# MAGIC | May 30th 2026| Sahithi Gudivada  | Creating the Table : jobs_raw |
 
 # COMMAND ----------
 
 spark.sql("""
-CREATE SCHEMA IF NOT EXISTS jobsintel.bronze
-""")
-
-# COMMAND ----------
-
-
-
-jobs_raw_table_schema = spark.sql("""
-                CREATE TABLE IF NOT EXISTS jobsintel.bronze.jobs_raw (
-                message_id BIGINT GENERATED ALWAYS AS IDENTITY, -- The identity of the message entering the table
-                source STRING,                              -- Name of the source where the data is fetched
-                payload STRING,                            -- The Json format of the data scraped from the websites
-                bd_create_dt_tm TIMESTAMP,                 -- timestamp loaded
-                bd_update_dt_tm TIMESTAMP                   -- timestamp updated
-            )
- USING DELTA
+        CREATE TABLE IF NOT EXISTS jobsintel.bronze.jobs_raw (
+            message_id BIGINT GENERATED ALWAYS AS IDENTITY COMMENT "The identity of the message entering the table",
+            source STRING COMMENT "Name of the source where the data is fetched",
+            payload STRING  COMMENT "The Json format of the data scraped from the websites",
+            bd_create_dt_tm TIMESTAMP COMMENT "timestamp loaded",
+            bd_update_dt_tm TIMESTAMP COMMENT "timestamp updated"
+        )
+        USING DELTA
  """)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# COMMAND ----------
-
-spark.sql("SELECT * FROM jobsintel.bronze.jobs_raw").show()
