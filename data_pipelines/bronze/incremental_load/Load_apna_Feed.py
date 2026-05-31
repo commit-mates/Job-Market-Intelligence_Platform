@@ -48,9 +48,7 @@ logger = logging.getLogger("job_ingestion")
 # Function to ingest data from apnajob jobsite
 def ingest_jobs_to_bronze(url: str):
 
-    try:
         logger.info("Starting API request...")
-
         response = requests.get(url, timeout=30)
 
         if response.status_code != 200:
@@ -90,14 +88,9 @@ def ingest_jobs_to_bronze(url: str):
         # Load data into jobs_raw table
         job_data_df.write.mode("append").saveAsTable("jobsintel.bronze.jobs_raw")
         logger.info(f"Data successfully written to jobs_raw_table")
-        return  "success"
-    
-    except Exception as e:
-        logger.exception("Job ingestion failed")
-        raise e
 
-
-
-ingest_jobs_to_bronze(URL)
-
-
+try:
+    ingest_jobs_to_bronze(URL)
+except Exception as e:
+    logger.exception("Job ingestion failed")
+    raise
