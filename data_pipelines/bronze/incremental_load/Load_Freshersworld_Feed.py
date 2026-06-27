@@ -11,7 +11,7 @@
 # MAGIC | **Created By**        | Sahithi Gudivada      |
 # MAGIC | **Business Logic By** | Yateesh Chandra       |
 # MAGIC | **Load Strategy**     | Append               |
-# MAGIC | **Source**            | Apna API             |
+# MAGIC | **Source**            | Scraping Freshersworld         |
 # MAGIC | **Target**            | jobsintel.bronze.raw_freshersworld_jobs |
 # MAGIC
 # MAGIC ---
