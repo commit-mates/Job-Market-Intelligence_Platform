@@ -5,7 +5,7 @@
 # ///
 # MAGIC %md
 # MAGIC %md
-# MAGIC ## Create_Bronze_Jobs_Raw
+# MAGIC ## Create_Bronze_Raw_Freshersworld_Jobs
 # MAGIC
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|

@@ -4,11 +4,12 @@
 # environment_version = "5"
 # ///
 # MAGIC %md
-# MAGIC ## Create_Bronze_Jobs_Raw
+# MAGIC %md
+# MAGIC ## Create_Bronze_Raw_APNA_Jobs
 # MAGIC
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
-# MAGIC | Jun 30th 2026| Sahithi Gudivada  | Creating the Table : jobs_raw |
+# MAGIC | May 30 2026| Sahithi Gudivada  | Creating the Table : raw_apna_jobs  |
 
 # COMMAND ----------
 
