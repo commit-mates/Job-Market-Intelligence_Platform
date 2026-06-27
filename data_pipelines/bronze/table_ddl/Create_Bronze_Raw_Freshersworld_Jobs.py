@@ -9,7 +9,7 @@
 # MAGIC
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
-# MAGIC | apr 3rd 2026| Sahithi Gudivada  | Creating the Table : raw_freshersworld_jobs |
+# MAGIC | Apr 3rd 2026| Sahithi Gudivada  | Creating the Table : raw_freshersworld_jobs |
 
 # COMMAND ----------
 
