@@ -11,8 +11,8 @@
 # MAGIC | **Created By**        | Sahithi Gudivada      |
 # MAGIC | **Business Logic By** | Yateesh Chandra       |
 # MAGIC | **Load Strategy**     | Append               |
-# MAGIC | **Source**            | Scraping JobCliff         |
-# MAGIC | **Target**            | jobsintel.bronze.raw_Jobcliff_jobs
+# MAGIC | **Source**            | Extracting Data from API jobcliff  |
+# MAGIC | **Target**            | jobsintel.bronze.raw_jobcliff_jobs
 # MAGIC  |
 # MAGIC
 # MAGIC ---
@@ -42,7 +42,7 @@ payload_list = []
 # COMMAND ----------
 
 # DBTITLE 1,Define a function to Fetch response from APNA Jobs
-def fetch_JobCliff_jobs(url, num = 1):
+def fetch_jobcliff_jobs(url, num = 1):
     response = requests.get(url + f"?page={num}&limit=12", timeout = 90)
 
     if response.status_code != 200:
@@ -57,7 +57,7 @@ def fetch_JobCliff_jobs(url, num = 1):
             "company_name" : row['company'],
             "created_on" : row['postedDate'],
             "salary" : row['salary'],
-            "job-type" :row['type'],
+            "job_type" :row['type'],
             "location" : row['workingLocation']
         }
         payload_list.append(json.dumps(payload))
@@ -68,13 +68,13 @@ def fetch_JobCliff_jobs(url, num = 1):
 # DBTITLE 1,Call the Function
 # As per the requirement, we are targetting to capture around 100 jobs
 for num in range(1,9):
-    val = fetch_JobCliff_jobs(URL, num)
+    val = fetch_jobcliff_jobs(URL, num)
 
 
 # COMMAND ----------
 
 # DBTITLE 1,Reading the data into Dataframe
-JobCliff_df = spark.createDataFrame(val,schema = ['PAYLOAD']) \
+jobcliff_df = spark.createDataFrame(val,schema = ['PAYLOAD']) \
             .withColumn("BD_CREATE_DT_TM", current_timestamp()) \
             .withColumn("BD_UPDATE_DT_TM", current_timestamp())
 
@@ -82,4 +82,4 @@ JobCliff_df = spark.createDataFrame(val,schema = ['PAYLOAD']) \
 # COMMAND ----------
 
 # DBTITLE 1,Appending the data into Target Table
-JobCliff_df.write.mode("append").saveAsTable("jobsintel.bronze.raw_JobCliff_jobs")
+jobcliff_df.write.mode("append").saveAsTable("jobsintel.bronze.raw_jobcliff_jobs")
