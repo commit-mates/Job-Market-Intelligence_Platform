@@ -4,14 +4,14 @@
 # environment_version = "5"
 # ///
 # MAGIC %md
-# MAGIC ## Load_Freshersworld_Feed
+# MAGIC ## Load_Unstop_Feed
 # MAGIC
 # MAGIC | Metadata | Detail |
 # MAGIC |-----------------------|----------------------|
 # MAGIC | **Created By**        | Sahithi Gudivada      |
 # MAGIC | **Business Logic By** | Yateesh Chandra       |
 # MAGIC | **Load Strategy**     | Append               |
-# MAGIC | **Source**            | Extracting Data from API jobcliff  |
+# MAGIC | **Source**            | Extracting Data from API unstop  |
 # MAGIC | **Target**            | jobsintel.bronze.raw_unstop_jobs
 # MAGIC  |
 # MAGIC
@@ -49,7 +49,7 @@ payload_list = []
 
 # COMMAND ----------
 
-# DBTITLE 1,Define a function to Fetch response from APNA Jobs
+# DBTITLE 1,Define a function to Fetch response from UNSTOP Jobs
 def fetch_unstop_jobs(url, num = 1):
     for page in range(1, 7):
         params = {
