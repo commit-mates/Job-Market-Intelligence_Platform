@@ -3,14 +3,12 @@
 # [tool.databricks.environment]
 # environment_version = "5"
 # ///
-# MAGIC %md
-# MAGIC %md
-# MAGIC %md
-# MAGIC ## Create_Bronze_Raw_Freshersworld_Jobs
-# MAGIC
-# MAGIC | Date         | Modified By      | Change Log             |
-# MAGIC |--------------|------------------|------------------------|
-# MAGIC |  Aug 8th 2026| Sahithi Gudivada  | Creating the Table : raw_unstop_jobs |
+
+## Create_Bronze_Raw_Freshersworld_Jobs
+
+| Date         | Modified By      | Change Log             |
+|--------------|------------------|------------------------|
+|  Aug 8th 2026| Sahithi Gudivada  | Creating the Table : raw_unstop_jobs |
 
 # COMMAND ----------
 
