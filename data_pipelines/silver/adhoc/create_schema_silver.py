@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 # MAGIC %md
 # MAGIC ## Create_Schema_Silver
 # MAGIC
@@ -9,3 +13,7 @@
 # COMMAND ----------
 
 spark.sql("""CREATE SCHEMA IF NOT EXISTS silver""")
+
+# COMMAND ----------
+
+spark.sql("""select * from jobsintel.silver.dim_companies""")
