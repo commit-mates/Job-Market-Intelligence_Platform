@@ -29,6 +29,7 @@ from pyspark.sql.functions import col, get_json_object, current_timestamp
 from pyspark.sql.types import (
     StringType, IntegerType, DecimalType, TimestampType
 )
+from delta.tables import DeltaTable
 
 # COMMAND ----------
 
@@ -56,9 +57,28 @@ apna_silver_df = apna_bronze_df.select(
     get_json_object(col("PAYLOAD"), "$.application_url").alias("application_url"),
     get_json_object(col("PAYLOAD"), "$.location").alias("location")
 )
+apna_silver_df = (
+    apna_silver_df
+    .withColumn("BD_CREATE_DT_TM", current_timestamp())
+    .withColumn("BD_UPDATE_DT_TM", current_timestamp())
+)
 
 
 # COMMAND ----------
 
-# DBTITLE 1,Overwriting the data into Target Table
-apna_silver_df.write.mode("overwrite").saveAsTable("jobsintel.silver.apna_jobs")
+targetDF = DeltaTable.forName(spark, "jobsintel.silver.apna_jobs")
+(
+    targetDF.alias("target")
+    .merge(
+        apna_silver_df.alias("source"),
+        "target.job_id = source.job_id"
+    )
+    .whenMatchedUpdateAll(
+        condition="""
+            source.BD_CREATE_DT_TM > target.BD_CREATE_DT_TM
+        """
+    )
+    .whenNotMatchedInsertAll()
+    .execute()
+)
+
