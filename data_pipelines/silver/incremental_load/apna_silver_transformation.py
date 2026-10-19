@@ -4,13 +4,13 @@
 # environment_version = "6"
 # ///
 # MAGIC %md
-# MAGIC ## Load_APNA_Feed
+# MAGIC ## Apna_Silver_Transformation
 # MAGIC
 # MAGIC | Metadata | Detail |
 # MAGIC |-----------------------|----------------------|
 # MAGIC | **Created By**        | Sahithi Gudivada      |
 # MAGIC | **Business Logic By** | Yateesh Chandra       |
-# MAGIC | **Load Strategy**     | Overwrite               |
+# MAGIC | **Load Strategy**     | Merge                |
 # MAGIC | **Source**            | Bronze_apna_table           |
 # MAGIC | **Target**            | jobsintel.silver.apna_jobs |
 # MAGIC
