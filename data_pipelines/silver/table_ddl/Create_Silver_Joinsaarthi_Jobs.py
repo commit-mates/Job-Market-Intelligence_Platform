@@ -13,24 +13,24 @@
 
 # COMMAND ----------
 
+
 spark.sql("""
-    CREATE TABLE IF NOT EXISTS jobsintel.silver.joinsaarthi_jobs
+    CREATE TABLE IF NOT EXISTS jobsintel.silver.joinsaarthi_jobs (
+        job_id STRING COMMENT 'Unique APNA job ID',
+        title STRING COMMENT 'Job title',
+        company_id STRING COMMENT 'Company ID',
+        company_name STRING COMMENT 'Company name',
+        created_on TIMESTAMP COMMENT 'Job creation timestamp',
+        expiry TIMESTAMP COMMENT 'Job expiry timestamp',
+        min_salary DECIMAL(12,2) COMMENT 'Minimum salary',
+        max_salary DECIMAL(12,2) COMMENT 'Maximum salary',
+        experience STRING COMMENT ' experience',
+        shift STRING COMMENT 'Job shift',
+        job_type STRING COMMENT 'Job type',
+        location STRING COMMENT 'Job location',
+        BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
+        BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
+    )
     USING DELTA
-    AS
-    SELECT
-        get_json_object(PAYLOAD, '$.job_id') AS job_id,
-        get_json_object(PAYLOAD, '$.title') AS title,
-        get_json_object(PAYLOAD, '$.company_id') AS company_id,
-        get_json_object(PAYLOAD, '$.company_name') AS company_name,
-        get_json_object(PAYLOAD, '$.created_on') AS created_on,
-        get_json_object(PAYLOAD, '$.expiry') AS expiry,
-        get_json_object(PAYLOAD, '$.min_salary') AS min_salary,
-        get_json_object(PAYLOAD, '$.max_salary') AS max_salary,
-        get_json_object(PAYLOAD, '$.experience') AS experience,
-        get_json_object(PAYLOAD, '$.shift') AS shift,
-        get_json_object(PAYLOAD, '$.job_type') AS job_type,
-        get_json_object(PAYLOAD, '$.location') AS location,
-        current_timestamp() AS BD_CREATE_DT_TM,
-        current_timestamp() AS BD_UPDATE_DT_TM
-    FROM jobsintel.bronze.raw_joinsaarthi_jobs
 """)
+
