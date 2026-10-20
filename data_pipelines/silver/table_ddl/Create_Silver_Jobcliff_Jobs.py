@@ -13,19 +13,19 @@
 
 # COMMAND ----------
 
+
 spark.sql("""
-    CREATE TABLE IF NOT EXISTS jobsintel.silver.jobcliff_jobs
+    CREATE TABLE IF NOT EXISTS jobsintel.silver.jobcliff_jobs (
+        job_id STRING COMMENT 'Unique cutshort job ID',
+        title STRING COMMENT 'Job title',
+        job_type STRING COMMENT 'job type',
+        company_name STRING COMMENT 'Company name',
+        location STRING COMMENT 'Job location',
+        created_on STRING COMMENT 'created on',
+        salary STRING COMMENT 'salary of the candidate',
+        BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
+        BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
+    )
     USING DELTA
-    AS
-    SELECT
-        get_json_object(PAYLOAD, '$.job_id') AS job_id,
-        get_json_object(PAYLOAD, '$.title') AS title,
-        get_json_object(PAYLOAD, '$.job_type') AS job_type,
-        get_json_object(PAYLOAD, '$.company_name') AS company_name,
-        get_json_object(PAYLOAD, '$.location') AS location,
-        get_json_object(PAYLOAD, '$.created_on') AS created_on,
-        get_json_object(PAYLOAD, '$.salary') AS salary,
-        current_timestamp() AS BD_CREATE_DT_TM,
-        current_timestamp() AS BD_UPDATE_DT_TM
-    FROM jobsintel.bronze.raw_jobcliff_jobs
 """)
+

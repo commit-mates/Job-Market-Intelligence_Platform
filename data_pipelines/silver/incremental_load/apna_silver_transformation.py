@@ -66,6 +66,7 @@ apna_silver_df = (
 
 # COMMAND ----------
 
+# DBTITLE 1,Load into the target table
 targetDF = DeltaTable.forName(spark, "jobsintel.silver.apna_jobs")
 (
     targetDF.alias("target")

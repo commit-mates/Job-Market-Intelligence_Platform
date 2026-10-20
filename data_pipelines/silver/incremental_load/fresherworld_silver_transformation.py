@@ -23,6 +23,7 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Import Requests
 from pyspark.sql.functions import col, get_json_object, current_timestamp
 from pyspark.sql.types import (
     StringType, IntegerType, DecimalType, TimestampType
@@ -31,10 +32,12 @@ from delta.tables import DeltaTable
 
 # COMMAND ----------
 
+# DBTITLE 1,Read the Bronze table
 fresherworld_bronze_df = spark.table("jobsintel.bronze.raw_freshersworld_jobs")
 
 # COMMAND ----------
 
+# DBTITLE 1,Extract fields from the JSON PAYLOAD
 fresherworld_silver_df = fresherworld_bronze_df.select(
         get_json_object(col("PAYLOAD"), '$.job_id').alias("job_id"),
         get_json_object(col("PAYLOAD"), '$.title').alias("title"),
@@ -55,6 +58,7 @@ fresherworld_silver_df = (
 
 # COMMAND ----------
 
+# DBTITLE 1,Load into the target table
 targetDF = DeltaTable.forName(spark, "jobsintel.silver.fresherworld_jobs")
 (
     targetDF.alias("target")
