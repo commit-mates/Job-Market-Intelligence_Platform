@@ -18,9 +18,9 @@ spark.sql("""
     CREATE TABLE IF NOT EXISTS jobsintel.silver.cutshort_jobs (
         job_id STRING COMMENT 'Unique cutshort job ID',
         title STRING COMMENT 'Job title',
-        company_id STRING COMMENT 'Company ID',
         company_name STRING COMMENT 'Company name',
         company_url STRING COMMENT 'Company  URL',
+        job_url STRING COMMENT 'job  URL',
         location STRING COMMENT 'Job location',
         experience STRING COMMENT 'experience of the candidate',
         salary STRING COMMENT 'salary of the candidate',
@@ -32,3 +32,8 @@ spark.sql("""
     USING DELTA
 """)
 
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from  jobsintel.silver.cutshort_jobs

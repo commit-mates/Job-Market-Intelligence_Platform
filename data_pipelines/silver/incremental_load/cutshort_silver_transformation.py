@@ -39,7 +39,7 @@ cutshort_bronze_df = spark.table("jobsintel.bronze.raw_cutshort_jobs")
 cutshort_silver_df = cutshort_bronze_df.select(
         get_json_object(col("PAYLOAD"), "$.job_id").alias("job_id"),
         get_json_object(col("PAYLOAD"), '$.title').alias("title"),
-        get_json_object(col("PAYLOAD"), '$.job_url').alias("company_id"),
+        get_json_object(col("PAYLOAD"), '$.job_url').alias("job_url"),
         get_json_object(col("PAYLOAD"),'$.company_name').alias("company_name"),
         get_json_object(col("PAYLOAD"), '$.company_url').alias("company_url"),
         get_json_object(col("PAYLOAD"), '$.location').alias("location"),
@@ -66,7 +66,16 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.cutshort_jobs")
     )
     .whenMatchedUpdateAll(
         condition="""
-            source.BD_CREATE_DT_TM > target.BD_CREATE_DT_TM
+            source.BD_UPDATE_DT_TM > target.BD_UPDATE_DT_TM and 
+            source.title != target.title or
+            source.job_url != target.job_url or
+            source.company_name != target.company_name or
+            source.company_url != target.company_url or
+            source.location != target.location or
+            source.experience != target.experience or
+            source.salary != target.salary or
+            source.job_desc != target.job_desc or
+            source.skills != target.skills 
         """
     )
     .whenNotMatchedInsertAll()

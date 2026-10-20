@@ -3,10 +3,6 @@
 # [tool.databricks.environment]
 # environment_version = "6"
 # ///
-
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ## Jobcliff_Silver_Transformation
 # MAGIC | Metadata | Detail |
@@ -71,7 +67,13 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.jobcliff_jobs")
     )
     .whenMatchedUpdateAll(
         condition="""
-            source.BD_CREATE_DT_TM > target.BD_CREATE_DT_TM
+            source.BD_UPDATE_DT_TM > target.BD_UPDATE_DT_TM and
+            source.title != target.title or
+            source.job_type != target.job_type or
+            source.company_name != target.company_name or
+            source.location != target.location or
+            source.created_on != target.created_on or
+            source.salary != target.salary or
         """
     )
     .whenNotMatchedInsertAll()

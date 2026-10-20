@@ -68,7 +68,15 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.fresherworld_jobs")
     )
     .whenMatchedUpdateAll(
         condition="""
-            source.BD_CREATE_DT_TM > target.BD_CREATE_DT_TM
+            source.BD_UPDATE_DT_TM > target.BD_UPDATE_DT_TM and
+            source.title != target.title or
+            source.job_url != target.job_url or
+            source.company != target.company or
+            source.location != target.location or
+            source.experience != target.experience or
+            source.salary != target.salary or
+            source.job_desc != target.job_desc or
+            source.skills != target.skills 
         """
     )
     .whenNotMatchedInsertAll()
