@@ -3,7 +3,6 @@
 # [tool.databricks.environment]
 # environment_version = "5"
 # ///
-
 ## Create_Bronze_Raw_Cutshort_Jobs
 
 | Date         | Modified By      | Change Log             |
