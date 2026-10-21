@@ -16,13 +16,13 @@
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS jobsintel.silver.jobcliff_jobs (
-        job_id STRING COMMENT 'Unique cutshort job ID',
-        title STRING COMMENT 'Job title',
-        job_type STRING COMMENT 'job type',
-        company_name STRING COMMENT 'Company name',
-        location STRING COMMENT 'Job location',
-        created_on STRING COMMENT 'created on',
-        salary STRING COMMENT 'salary of the candidate',
+        JOB_ID STRING COMMENT 'Unique cutshort job ID',
+        TITLE STRING COMMENT 'Job title',
+        JOB_TYPE STRING COMMENT 'job type',
+        COMPANY_NAME STRING COMMENT 'Company name',
+        LOCATION STRING COMMENT 'Job location',
+        CREATED_ON STRING COMMENT 'created on',
+        SALARY STRING COMMENT 'salary of the candidate',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )

@@ -46,14 +46,10 @@ cutshort_silver_df = cutshort_bronze_df.select(
         get_json_object(col("PAYLOAD"), '$.experience').alias("experience"),
         get_json_object(col("PAYLOAD"), '$.salary').alias("salary"),
         get_json_object(col("PAYLOAD"), '$.job_desc').alias("job_desc"),
-        get_json_object(col("PAYLOAD"), '$.skills').alias("skills")
+        get_json_object(col("PAYLOAD"), '$.skills').alias("skills"),
+        col("BD_CREATE_DT_TM"),
+        col("BD_UPDATE_DT_TM")
 )
-cutshort_silver_df = (
-    cutshort_silver_df
-    .withColumn("BD_CREATE_DT_TM", current_timestamp())
-    .withColumn("BD_UPDATE_DT_TM", current_timestamp())
-)
-
 
 # COMMAND ----------
 

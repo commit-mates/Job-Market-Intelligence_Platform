@@ -16,18 +16,18 @@
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS jobsintel.silver.unstop_jobs (
-        job_id STRING COMMENT 'Unique APNA job ID',
-        title STRING COMMENT 'Job title',
-        company_name STRING COMMENT 'Company name',
-        created_on TIMESTAMP COMMENT 'Job creation timestamp',
-        expiry STRING COMMENT 'Job expiry timestamp',
-        min_salary DECIMAL(12,2) COMMENT 'Minimum salary',
-        max_salary DECIMAL(12,2) COMMENT 'Maximum salary',
-        min_experience INT COMMENT 'Minimum experience',
-        max_experience INT COMMENT 'Maximum experience',
-        shift STRING COMMENT 'Job shift',
-        job_type STRING COMMENT 'Job type',
-        location STRING COMMENT 'Job location',
+        JOB_ID STRING COMMENT 'Unique APNA job ID',
+        TITLE STRING COMMENT 'Job title',
+        COMPANY_NAME STRING COMMENT 'Company name',
+        CREATED_ON TIMESTAMP COMMENT 'Job creation timestamp',
+        EXPIRY STRING COMMENT 'Job expiry timestamp',
+        MIN_SALARY DECIMAL(12,2) COMMENT 'Minimum salary',
+        MAX_SALARY DECIMAL(12,2) COMMENT 'Maximum salary',
+        MIN_EXPERIENCE INT COMMENT 'Minimum experience',
+        MAX_EXPERIENCE INT COMMENT 'Maximum experience',
+        SHIFT STRING COMMENT 'Job shift',
+        JOB_TYPE STRING COMMENT 'Job type',
+        LOCATION STRING COMMENT 'Job location',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )

@@ -40,29 +40,25 @@ apna_bronze_df = spark.table("jobsintel.bronze.raw_apna_jobs")
 
 # DBTITLE 1,Extract fields from the JSON PAYLOAD
 apna_silver_df = apna_bronze_df.select(
-            get_json_object(col("PAYLOAD"), "$.job_id").alias("job_id"),
-            get_json_object(col("PAYLOAD"), "$.title").alias("title"),
-            get_json_object(col("PAYLOAD"), "$.company_id").alias("company_id"),
-            get_json_object(col("PAYLOAD"), "$.company_name").alias("company_name"),
-            get_json_object(col("PAYLOAD"), "$.created_on").alias("created_on"),
-            get_json_object(col("PAYLOAD"), "$.last_updated").alias("last_updated"),
-            get_json_object(col("PAYLOAD"), "$.expiry").alias("expiry"),
-            get_json_object(col("PAYLOAD"), "$.department_id").alias("department_id"),
-            get_json_object(col("PAYLOAD"), "$.department").alias("department"),
-            get_json_object(col("PAYLOAD"), "$.min_salary").alias("min_salary"),
-            get_json_object(col("PAYLOAD"), "$.max_salary").alias("max_salary"),
-            get_json_object(col("PAYLOAD"), "$.min_experience").alias("min_experience"),
-            get_json_object(col("PAYLOAD"), "$.max_experience").alias("max_experience"),
-            get_json_object(col("PAYLOAD"), "$.shift").alias("shift"),
-            get_json_object(col("PAYLOAD"), "$.application_url").alias("application_url"),
-            get_json_object(col("PAYLOAD"), "$.location").alias("location")
+    get_json_object(col("PAYLOAD"), "$.job_id").alias("job_id"),
+    get_json_object(col("PAYLOAD"), "$.title").alias("title"),
+    get_json_object(col("PAYLOAD"), "$.company_id").alias("company_id"),
+    get_json_object(col("PAYLOAD"), "$.company_name").alias("company_name"),
+    get_json_object(col("PAYLOAD"), "$.created_on").alias("created_on"),
+    get_json_object(col("PAYLOAD"), "$.last_updated").alias("last_updated"),
+    get_json_object(col("PAYLOAD"), "$.expiry").alias("expiry"),
+    get_json_object(col("PAYLOAD"), "$.department_id").alias("department_id"),
+    get_json_object(col("PAYLOAD"), "$.department").alias("department"),
+    get_json_object(col("PAYLOAD"), "$.min_salary").alias("min_salary"),
+    get_json_object(col("PAYLOAD"), "$.max_salary").alias("max_salary"),
+    get_json_object(col("PAYLOAD"), "$.min_experience").alias("min_experience"),
+    get_json_object(col("PAYLOAD"), "$.max_experience").alias("max_experience"),
+    get_json_object(col("PAYLOAD"), "$.shift").alias("shift"),
+    get_json_object(col("PAYLOAD"), "$.application_url").alias("application_url"),
+    get_json_object(col("PAYLOAD"), "$.location").alias("location"),
+    col("BD_CREATE_DT_TM"),
+    col("BD_UPDATE_DT_TM")
 )
-apna_silver_df = (
-    apna_silver_df
-    .withColumn("BD_CREATE_DT_TM", current_timestamp())
-    .withColumn("BD_UPDATE_DT_TM", current_timestamp())
-)
-
 
 # COMMAND ----------
 

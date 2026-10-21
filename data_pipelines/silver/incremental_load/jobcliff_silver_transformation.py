@@ -46,14 +46,9 @@ jobcliff_silver_df = jobcliff_bronze_df.select(
         get_json_object(col("PAYLOAD"), '$.location').alias("location"),
         get_json_object(col("PAYLOAD"), '$.created_on').alias("created_on"),
         get_json_object(col("PAYLOAD"), '$.salary').alias("salary"),
-        
+        col("BD_CREATE_DT_TM"),
+        col("BD_UPDATE_DT_TM")
 )
-jobcliff_silver_df = (
-    jobcliff_silver_df
-    .withColumn("BD_CREATE_DT_TM", current_timestamp())
-    .withColumn("BD_UPDATE_DT_TM", current_timestamp())
-)
-
 
 # COMMAND ----------
 

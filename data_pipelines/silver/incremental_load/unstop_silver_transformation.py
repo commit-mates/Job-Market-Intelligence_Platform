@@ -50,14 +50,10 @@ unstop_silver_df = unstop_bronze_df.select(
             get_json_object(col("PAYLOAD"), "$.max_experience").alias("max_experience"),
             get_json_object(col("PAYLOAD"), "$.shift").alias("shift"),
             get_json_object(col("PAYLOAD"), "$.job_type").alias("job_type"),
-            get_json_object(col("PAYLOAD"), "$.location").alias("location")
-)
-unstop_silver_df = (
-    unstop_silver_df
-    .withColumn("BD_CREATE_DT_TM", current_timestamp())
-    .withColumn("BD_UPDATE_DT_TM", current_timestamp())
-)
-
+            get_json_object(col("PAYLOAD"), "$.location").alias("location"),
+            col("BD_CREATE_DT_TM"),
+            col("BD_UPDATE_DT_TM")
+) 
 
 # COMMAND ----------
 

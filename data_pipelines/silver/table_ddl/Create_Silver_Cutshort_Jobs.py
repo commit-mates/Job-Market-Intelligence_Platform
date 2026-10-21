@@ -16,24 +16,19 @@
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS jobsintel.silver.cutshort_jobs (
-        job_id STRING COMMENT 'Unique cutshort job ID',
-        title STRING COMMENT 'Job title',
-        company_name STRING COMMENT 'Company name',
-        company_url STRING COMMENT 'Company  URL',
-        job_url STRING COMMENT 'job  URL',
-        location STRING COMMENT 'Job location',
-        experience STRING COMMENT 'experience of the candidate',
-        salary STRING COMMENT 'salary of the candidate',
-        job_desc STRING COMMENT 'Job description',
-        skills STRING COMMENT 'skills',
+        JOB_ID STRING COMMENT 'Unique cutshort job ID',
+        TITLE STRING COMMENT 'Job title',
+        COMPANY_NAME STRING COMMENT 'Company name',
+        COMPANY_URL STRING COMMENT 'Company  URL',
+        JOB_URL STRING COMMENT 'job  URL',
+        LOCATION STRING COMMENT 'Job location',
+        EXPERIENCE STRING COMMENT 'experience of the candidate',
+        SALARY STRING COMMENT 'salary of the candidate',
+        JOB_DESC STRING COMMENT 'Job description',
+        SKILLS STRING COMMENT 'skills',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
     USING DELTA
 """)
 
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select * from  jobsintel.silver.cutshort_jobs

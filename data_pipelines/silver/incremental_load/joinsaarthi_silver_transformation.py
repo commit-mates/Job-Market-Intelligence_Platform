@@ -50,14 +50,10 @@ joinsaarthi_silver_df = joinsaarthi_bronze_df.select(
             get_json_object(col("PAYLOAD"), "$.experience").alias("experience"),
             get_json_object(col("PAYLOAD"), "$.shift").alias("shift"),
             get_json_object(col("PAYLOAD"), "$.job_type").alias("job_type"),
-            get_json_object(col("PAYLOAD"), "$.location").alias("location")
+            get_json_object(col("PAYLOAD"), "$.location").alias("location"),
+            col("BD_CREATE_DT_TM"),
+            col("BD_UPDATE_DT_TM")
 )
-joinsaarthi_silver_df = (
-    joinsaarthi_silver_df
-    .withColumn("BD_CREATE_DT_TM", current_timestamp())
-    .withColumn("BD_UPDATE_DT_TM", current_timestamp())
-)
-
 
 # COMMAND ----------
 
