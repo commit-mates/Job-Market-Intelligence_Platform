@@ -10,7 +10,7 @@
 # MAGIC | **Created By**        | Sahithi Gudivada      |
 # MAGIC | **Business Logic By** | Yateesh Chandra       |
 # MAGIC | **Load Strategy**     | Merge                |
-# MAGIC | **Source**            | Bronze_fresherworld_table           |
+# MAGIC | **Source**            | jobsintel.bronze.raw_freshersworld_jobs           |
 # MAGIC | **Target**            | jobsintel.silver.fresherworld_jobs |
 # MAGIC
 # MAGIC ---
@@ -39,15 +39,15 @@ fresherworld_bronze_df = spark.table("jobsintel.bronze.raw_freshersworld_jobs")
 
 # DBTITLE 1,Extract fields from the JSON PAYLOAD
 fresherworld_silver_df = fresherworld_bronze_df.select(
-        get_json_object(col("PAYLOAD"), '$.job_id').alias("job_id"),
-        get_json_object(col("PAYLOAD"), '$.title').alias("title"),
-        get_json_object(col("PAYLOAD"), '$.job_url').alias("job_url"),
-        get_json_object(col("PAYLOAD"), '$.company').alias("company"),
-        get_json_object(col("PAYLOAD"), '$.location').alias("location"),
-        get_json_object(col("PAYLOAD"), '$.experience').alias("experience"),
-        get_json_object(col("PAYLOAD"), '$.salary').alias("salary"),
-        get_json_object(col("PAYLOAD"), '$.job_desc').alias("job_desc"),
-        get_json_object(col("PAYLOAD"), '$.skills').alias("skills"),
+        get_json_object(col("PAYLOAD"), '$.job_id').alias("JOB_ID"),
+        get_json_object(col("PAYLOAD"), '$.title').alias("TITLE"),
+        get_json_object(col("PAYLOAD"), '$.job_url').alias("JOB_URL"),
+        get_json_object(col("PAYLOAD"), '$.company').alias("COMPANY"),
+        get_json_object(col("PAYLOAD"), '$.location').alias("LOCATION"),
+        get_json_object(col("PAYLOAD"), '$.experience').alias("EXPERIENCE"),
+        get_json_object(col("PAYLOAD"), '$.salary').alias("SALARY"),
+        get_json_object(col("PAYLOAD"), '$.job_desc').alias("JOB_DESC"),
+        get_json_object(col("PAYLOAD"), '$.skills').alias("SKILLS"),
         col("BD_CREATE_DT_TM"),
         col("BD_UPDATE_DT_TM")
 )
@@ -57,22 +57,22 @@ fresherworld_silver_df = fresherworld_bronze_df.select(
 # DBTITLE 1,Load into the target table
 targetDF = DeltaTable.forName(spark, "jobsintel.silver.fresherworld_jobs")
 (
-    targetDF.alias("target")
+    targetDF.alias("TARGET")
     .merge(
-        fresherworld_silver_df.alias("source"),
-        "target.job_id = source.job_id"
+        fresherworld_silver_df.alias("SOURCE"),
+        "TARGET.JOB_ID = SOURCE.JOB_ID"
     )
     .whenMatchedUpdateAll(
         condition="""
-            source.BD_UPDATE_DT_TM > target.BD_UPDATE_DT_TM and
-            source.title != target.title or
-            source.job_url != target.job_url or
-            source.company != target.company or
-            source.location != target.location or
-            source.experience != target.experience or
-            source.salary != target.salary or
-            source.job_desc != target.job_desc or
-            source.skills != target.skills 
+            SOURCE.BD_UPDATE_DT_TM > TARGET.BD_UPDATE_DT_TM AND
+            SOURCE.TITLE != TARGET.TITLE OR
+            SOURCE.JOB_URL != TARGET.JOB_URL OR
+            SOURCE.COMPANY != TARGET.COMPANY OR
+            SOURCE.LOCATION != TARGET.LOCATION OR
+            SOURCE.EXPERIENCE != TARGET.EXPERIENCE OR
+            SOURCE.SALARY != TARGET.SALARY OR
+            SOURCE.JOB_DESC != TARGET.JOB_DESC OR
+            SOURCE.SKILLS != TARGET.SKILLS 
         """
     )
     .whenNotMatchedInsertAll()

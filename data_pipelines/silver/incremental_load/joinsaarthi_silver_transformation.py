@@ -10,7 +10,7 @@
 # MAGIC | **Created By**        | Sahithi Gudivada      |
 # MAGIC | **Business Logic By** | Yateesh Chandra       |
 # MAGIC | **Load Strategy**     | Merge                |
-# MAGIC | **Source**            | Bronze_joinsaarthi_table           |
+# MAGIC | **Source**            | jobsintel.bronze.raw_joinsaarthi_jobs          |
 # MAGIC | **Target**            | jobsintel.silver.joinsaarthi_jobs |
 # MAGIC
 # MAGIC ---
@@ -39,18 +39,18 @@ joinsaarthi_bronze_df = spark.table("jobsintel.bronze.raw_joinsaarthi_jobs")
 
 # DBTITLE 1,Extract fields from the JSON PAYLOAD
 joinsaarthi_silver_df = joinsaarthi_bronze_df.select(
-            get_json_object(col("PAYLOAD"), "$.job_id").alias("job_id"),
-            get_json_object(col("PAYLOAD"), "$.title").alias("title"),
-            get_json_object(col("PAYLOAD"), "$.company_id").alias("company_id"),
-            get_json_object(col("PAYLOAD"), "$.company_name").alias("company_name"),
-            get_json_object(col("PAYLOAD"), "$.created_on").alias("created_on"),
-            get_json_object(col("PAYLOAD"), "$.expiry").alias("expiry"),
-            get_json_object(col("PAYLOAD"), "$.min_salary").alias("min_salary"),
-            get_json_object(col("PAYLOAD"), "$.max_salary").alias("max_salary"),
-            get_json_object(col("PAYLOAD"), "$.experience").alias("experience"),
-            get_json_object(col("PAYLOAD"), "$.shift").alias("shift"),
-            get_json_object(col("PAYLOAD"), "$.job_type").alias("job_type"),
-            get_json_object(col("PAYLOAD"), "$.location").alias("location"),
+            get_json_object(col("PAYLOAD"), "$.job_id").alias("JOB_ID"),
+            get_json_object(col("PAYLOAD"), "$.title").alias("TITLE"),
+            get_json_object(col("PAYLOAD"), "$.company_id").alias("COMPANY_ID"),
+            get_json_object(col("PAYLOAD"), "$.company_name").alias("COMPANY_NAME"),
+            get_json_object(col("PAYLOAD"), "$.created_on").alias("CREATED_ON"),
+            get_json_object(col("PAYLOAD"), "$.expiry").alias("EXPIRY"),
+            get_json_object(col("PAYLOAD"), "$.min_salary").alias("MIN_SALARY"),
+            get_json_object(col("PAYLOAD"), "$.max_salary").alias("MAX_SALARY"),
+            get_json_object(col("PAYLOAD"), "$.experience").alias("EXPERIENCE"),
+            get_json_object(col("PAYLOAD"), "$.shift").alias("SHIFT"),
+            get_json_object(col("PAYLOAD"), "$.job_type").alias("JOB_TYPE"),
+            get_json_object(col("PAYLOAD"), "$.location").alias("LOCATION"),
             col("BD_CREATE_DT_TM"),
             col("BD_UPDATE_DT_TM")
 )
@@ -60,25 +60,25 @@ joinsaarthi_silver_df = joinsaarthi_bronze_df.select(
 # DBTITLE 1,Load into the target table
 targetDF = DeltaTable.forName(spark, "jobsintel.silver.joinsaarthi_jobs")
 (
-    targetDF.alias("target")
+    targetDF.alias("TARGET")
     .merge(
-        joinsaarthi_silver_df.alias("source"),
-        "target.job_id = source.job_id"
+        joinsaarthi_silver_df.alias("SOURCE"),
+        "TARGET.JOB_ID = SOURCE.JOB_ID"
     )
     .whenMatchedUpdateAll(
         condition="""
-            source.BD_UPDATE_DT_TM > target.BD_UPDATE_DT_TM and 
-            source.title != target.title or
-            source.company_id != target.company_id or
-            source.company_name != target.company_name or
-            source.created_on != target.created_on or
-            source.expiry != target.expiry or
-            source.min_salary != target.min_salary or
-            source.max_salary != target.max_salary or
-            source.experience != target.experience or
-            source.shift != target.shift or 
-            source.job_type != target.job_type or
-            source.location != target.location 
+            SOURCE.BD_UPDATE_DT_TM > TARGET.BD_UPDATE_DT_TM AND 
+            SOURCE.TITLE != TARGET.TITLE OR
+            SOURCE.COMPANY_ID != TARGET.COMPANY_ID OR
+            SOURCE.COMPANY_NAME != TARGET.COMPANY_NAME OR
+            SOURCE.CREATED_ON != TARGET.CREATED_ON OR
+            SOURCE.EXPIRY != TARGET.EXPIRY OR
+            SOURCE.MIN_SALARY != TARGET.MIN_SALARY OR
+            SOURCE.MAX_SALARY != TARGET.MAX_SALARY OR
+            SOURCE.EXPERIENCE != TARGET.EXPERIENCE OR
+            SOURCE.SHIFT != TARGET.SHIFT OR 
+            SOURCE.JOB_TYPE != TARGET.JOB_TYPE OR
+            SOURCE.LOCATION != TARGET.LOCATION 
         """
     )
     .whenNotMatchedInsertAll()
