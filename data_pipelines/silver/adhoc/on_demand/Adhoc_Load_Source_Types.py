@@ -34,10 +34,3 @@
 # MAGIC (5,'Joinsaarthi',1,"2026-08-14","2026-08-14"),
 # MAGIC (6,'Cutshort',1,"2026-08-15","2026-08-15");
 # MAGIC
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC -- describe history jobsintel.silver.dim_source;
-# MAGIC restore jobsintel.silver.dim_source to version as of 1
-# MAGIC
