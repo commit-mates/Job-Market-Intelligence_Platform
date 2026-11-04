@@ -42,7 +42,7 @@ cutshort_silver_df = cutshort_bronze_df.select(
         get_json_object(col("PAYLOAD"), '$.job_url').alias("JOB_URL"),
         get_json_object(col("PAYLOAD"),'$.company_name').alias("COMPANY_NAME"),
         get_json_object(col("PAYLOAD"), '$.company_url').alias("COMPANY_URl"),
-        get_json_object(col("PAYLOAD"), '$.location').alias("LOCATION"),
+        get_json_object(col("PAYLOAD"), '$.location').alias("CITY"),
         get_json_object(col("PAYLOAD"), '$.experience').alias("EXPERIENCE"),
         get_json_object(col("PAYLOAD"), '$.salary').alias("SALARY"),
         get_json_object(col("PAYLOAD"), '$.job_desc').alias("JOB_DESC"),
@@ -67,7 +67,7 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.cutshort_jobs")
             SOURCE.JOB_URL != TARGET.JOB_URL OR
             SOURCE.COMPANY_NAME != TARGET.COMPANY_NAME OR
             SOURCE.COMPANY_URL != TARGET.COMPANY_URL OR
-            SOURCE.LOCATION != TARGET.LOCATION OR
+            SOURCE.CITY != TARGET.CITY OR
             SOURCE.EXPERIENCE != TARGET.EXPERIENCE OR
             SOURCE.SALARY != TARGET.SALARY OR
             SOURCE.JOB_DESC != TARGET.JOB_DESC OR

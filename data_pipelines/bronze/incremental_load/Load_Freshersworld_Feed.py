@@ -83,6 +83,7 @@ def fetch_freshersworld_jobs(job_list):
         location = soup.select_one(".job-location a")
         experience = soup.select_one("div.job-details-sub-div span.space")
         salary = soup.select_one(" div.salary div.job-details-sub-div span.space")
+        posted_on = soup.select_one("div.posted_on span")
 
         payload = {
             "job_id": job_id,
@@ -93,7 +94,8 @@ def fetch_freshersworld_jobs(job_list):
             "location": location.get_text(strip=True) if location else None,
             "experience": experience.get_text(strip=True) if experience else None,
             "salary" : salary.get_text(strip=True) if salary else None,
-            "skills": skills.get_text(separator=", ", strip=True) if skills else None
+            "skills": skills.get_text(separator=", ", strip=True) if skills else None,
+            "posted_on": posted_on.get_text(strip=True) if posted_on else None
         }
 
         payload_list.append(json.dumps(payload))

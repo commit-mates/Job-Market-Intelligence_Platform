@@ -21,7 +21,7 @@ spark.sql("""
         COMPANY_NAME STRING COMMENT 'Company name',
         COMPANY_URL STRING COMMENT 'Company URL',
         JOB_URL STRING COMMENT 'job URL',
-        LOCATION STRING COMMENT 'Job location',
+        CITY STRING COMMENT 'Name of the city in which job is located',
         EXPERIENCE STRING COMMENT 'experience of the candidate',
         SALARY STRING COMMENT 'salary of the candidate',
         JOB_DESC STRING COMMENT 'Job description',
@@ -32,3 +32,15 @@ spark.sql("""
     USING DELTA
 """)
 
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select  explode_outer(split(CITY, ',')) AS CITY ,*from   jobsintel.silver.cutshort_jobs
+# MAGIC where JOB_ID = 'JByyrk3U'
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from jobsintel.silver.cutshort_jobs
+# MAGIC

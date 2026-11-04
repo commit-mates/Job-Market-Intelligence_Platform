@@ -63,7 +63,13 @@ def fetch_apna_jobs(url, num = 1):
             "max_experience" : row['max_experience'],
             "shift" : row['shift'],
             "application_url" : row['public_url_v2'],
-            "location" : row['location_name']
+            "location" : row['location_name'],
+            "location_id" : row['address']['area_id'],
+            "city" : row['address']['city']['name'],
+            "state" : row['address']['city']['json_data']['state'],
+            "pincode": row['address']['city']['mid_area']['json_data'].get('pincode'),
+            "latitude" : row['address']["latitude"],
+            "longitude" : row['address']["longitude"]
         }
         payload_list.append(json.dumps(payload))
     return payload_list

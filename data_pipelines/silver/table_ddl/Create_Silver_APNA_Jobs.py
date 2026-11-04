@@ -32,9 +32,20 @@ spark.sql("""
         SHIFT STRING COMMENT 'Job shift',
         APPLICATION_URL STRING COMMENT 'Job application URL',
         LOCATION STRING COMMENT 'Job location',
+        LOCATION_ID STRING COMMENT 'Job location_id',
+        CITY STRING COMMENT 'Job city',
+        STATE STRING COMMENT 'Job state',
+        PINCODE STRING COMMENT 'Job pincode',
+        LATITUDE FLOAT COMMENT 'Job latitude',
+        LONGITUDE FLOAT COMMENT 'Job longitude',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
     USING DELTA
 """)
 
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from jobsintel.silver.apna_jobs

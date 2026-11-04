@@ -46,6 +46,10 @@ jobcliff_silver_df = jobcliff_bronze_df.select(
         get_json_object(col("PAYLOAD"), '$.location').alias("LOCATION"),
         get_json_object(col("PAYLOAD"), '$.created_on').alias("CREATED_ON"),
         get_json_object(col("PAYLOAD"), '$.salary').alias("SALARY"),
+        get_json_object(col("PAYLOAD"), '$.city').alias("CITY"),
+        get_json_object(col("PAYLOAD"), '$.pincode').alias("PINCODE"),
+        get_json_object(col("PAYLOAD"), '$.latitude').alias("LATITUDE"),
+        get_json_object(col("PAYLOAD"), '$.longitude').alias("LONGITUDE"),        
         col("BD_CREATE_DT_TM"),
         col("BD_UPDATE_DT_TM")
 )
@@ -68,7 +72,11 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.jobcliff_jobs")
             SOURCE.COMPANY_NAME != TARGET.COMPANY_NAME OR
             SOURCE.LOCATION != TARGET.LOCATION OR
             SOURCE.CREATED_ON != TARGET.CREATED_ON OR
-            SOURCE.SALARY != TARGET.SALARY 
+            SOURCE.SALARY != TARGET.SALARY OR
+            SOURCE.CITY != TARGET.CITY OR
+            SOURCE.PINCODE != TARGET.PINCODE OR
+            SOURCE.LATITUDE != TARGET.LATITUDE OR
+            SOURCE.LONGITUDE != TARGET.LONGITUDE
         """
     )
     .whenNotMatchedInsertAll()

@@ -50,7 +50,7 @@ unstop_silver_df = unstop_bronze_df.select(
             get_json_object(col("PAYLOAD"), "$.max_experience").alias("MAX_EXPERIENCE"),
             get_json_object(col("PAYLOAD"), "$.shift").alias("SHIFT"),
             get_json_object(col("PAYLOAD"), "$.job_type").alias("JOB_TYPE"),
-            get_json_object(col("PAYLOAD"), "$.location").alias("LOCATION"),
+            get_json_object(col("PAYLOAD"), "$.location").alias("CITY"),
             col("BD_CREATE_DT_TM"),
             col("BD_UPDATE_DT_TM")
 ) 
@@ -78,7 +78,7 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.unstop_jobs")
             SOURCE.MAX_EXPERIENCE != TARGET.MAX_EXPERIENCE OR 
             SOURCE.SHIFT != TARGET.SHIFT OR 
             SOURCE.JOB_TYPE != TARGET.JOB_TYPE OR
-            SOURCE.LOCATION != TARGET.LOCATION 
+            SOURCE.CITY != TARGET.CITY 
         """
     )
     .whenNotMatchedInsertAll()
