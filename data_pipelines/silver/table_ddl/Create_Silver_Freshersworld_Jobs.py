@@ -31,9 +31,3 @@ spark.sql("""
     )
     USING DELTA
 """)
-
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC SELECT * FROM  jobsintel.silver.fresherworld_jobs

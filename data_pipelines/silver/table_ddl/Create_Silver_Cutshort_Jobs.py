@@ -31,16 +31,3 @@ spark.sql("""
     )
     USING DELTA
 """)
-
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select  explode_outer(split(CITY, ',')) AS CITY ,*from   jobsintel.silver.cutshort_jobs
-# MAGIC where JOB_ID = 'JByyrk3U'
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select * from jobsintel.silver.cutshort_jobs
-# MAGIC
