@@ -91,13 +91,9 @@ def clean_city(df):
             split(col("CITY"), ",")
         )
     )\
-    .withColumn(
-        "CITY",
-        explode_outer(col("CITY"))
+    .withColumn("CITY",explode_outer(col("CITY"))
     )\
-    .withColumn(
-        "CITY",
-        trim(col("CITY"))
+    .withColumn("CITY",trim(col("CITY"))
     )
 
     return df
