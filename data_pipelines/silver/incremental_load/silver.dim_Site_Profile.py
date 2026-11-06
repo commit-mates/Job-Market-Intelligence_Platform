@@ -199,14 +199,19 @@ new_locations_site_nbr= new_locations_jnr.withColumn(
                                 "0"
                             )
                         ).cast("long")
-                    )
+                    )\
+                   .withColumn("BD_CREATE_DT_TM", current_timestamp()) \
+                   .withColumn("BD_UPDATE_DT_TM", current_timestamp())
 final_new_locations = new_locations_site_nbr.select(
                     "CITY",
                     "STATE",
                     "PINCODE",
                     "LATITUDE",
                     "LONGITUDE",
-                    "SITE_NBR"
+                    "SITE_NBR",
+                    "BD_CREATE_DT_TM",
+                    "BD_UPDATE_DT_TM"
+
                 )
 
 # COMMAND ----------

@@ -21,12 +21,9 @@ spark.sql("""
         STATE STRING  COMMENT "State in which the city is located",
         PINCODE BIGINT  COMMENT "Pincode of the location",
         LATITUDE FLOAT comment "Latitude of the  location",
-        LONGITUDE FLOAT comment " Longitude of the location"
+        LONGITUDE FLOAT comment " Longitude of the location",
+        BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
+        BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
     USING DELTA
 """)
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select * from jobsintel.silver.site_profile;
