@@ -72,7 +72,8 @@ def fetch_joinsaarthi_jobs(url, num = 1):
             "experience" : row['yoe'],
             "shift" : row['work_mode'],
             "job_type" :row['job_type'],
-            "location" : row['location']
+            "location" : row['company']['location'],
+            "created_on" : row["posted_at"]
         }
         payload_list.append(json.dumps(payload))
     return payload_list

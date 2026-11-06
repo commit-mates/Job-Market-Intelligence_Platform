@@ -56,6 +56,12 @@ apna_silver_df = apna_bronze_df.select(
     get_json_object(col("PAYLOAD"), "$.shift").alias("SHIFT"),
     get_json_object(col("PAYLOAD"), "$.application_url").alias("application_url"),
     get_json_object(col("PAYLOAD"), "$.location").alias("LOCATION"),
+    get_json_object(col("PAYLOAD"), "$.location_id").alias("LOCATION_ID"),
+    get_json_object(col("PAYLOAD"), "$.city").alias("CITY"),
+    get_json_object(col("PAYLOAD"), "$.state").alias("STATE"),
+    get_json_object(col("PAYLOAD"), "$.pincode").alias("PINCODE"),
+    get_json_object(col("PAYLOAD"), "$.latitude").alias("LATITUDE"),
+    get_json_object(col("PAYLOAD"), "$.latitude").alias("LONGITUDE"),
     col("BD_CREATE_DT_TM"),
     col("BD_UPDATE_DT_TM")
 )
@@ -87,10 +93,15 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.apna_jobs")
             SOURCE.MAX_EXPERIENCE != TARGET.MAX_EXPERIENCE OR 
             SOURCE.SHIFT != TARGET.SHIFT OR 
             SOURCE.APPLICATION_URL != TARGET.APPLICATION_URL OR
-            SOURCE.LOCATION != TARGET.LOCATION 
+            SOURCE.LOCATION != TARGET.LOCATION OR
+            SOURCE.LOCATION_ID != TARGET.LOCATION_ID OR
+            SOURCE.CITY != TARGET.CITY OR
+            SOURCE.STATE != TARGET.STATE OR
+            SOURCE.PINCODE != TARGET.PINCODE OR
+            SOURCE.LATITUDE != TARGET.LATITUDE OR
+            SOURCE.LONGITUDE != TARGET.LONGITUDE 
         """
     )
     .whenNotMatchedInsertAll()
     .execute()
 )
-

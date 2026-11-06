@@ -20,14 +20,14 @@ spark.sql("""
         TITLE STRING COMMENT 'Job title',
         JOB_URL STRING COMMENT 'job url',
         COMPANY STRING COMMENT 'Company',
-        LOCATION STRING COMMENT 'Job location',
+        CITY STRING COMMENT "Name of the city in which company is located",
         EXPERIENCE STRING COMMENT 'experience of the candidate',
         SALARY STRING COMMENT 'salary of the candidate',
         JOB_DESC STRING COMMENT 'Job description',
         SKILLS STRING COMMENT 'skills',
+        CREATED_ON TIMESTAMP COMMENT 'Timestamp created',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
     USING DELTA
 """)
-

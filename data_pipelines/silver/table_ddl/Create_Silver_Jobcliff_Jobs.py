@@ -23,9 +23,12 @@ spark.sql("""
         LOCATION STRING COMMENT 'Job location',
         CREATED_ON STRING COMMENT 'created on',
         SALARY STRING COMMENT 'salary of the candidate',
+        CITY STRING COMMENT 'city of the location',
+        PINCODE STRING COMMENT 'pincode for the location',
+        LATITUDE STRING COMMENT 'latitude of the location',
+        LONGITUDE STRING COMMENT 'longitude of the location',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
     USING DELTA
 """)
-

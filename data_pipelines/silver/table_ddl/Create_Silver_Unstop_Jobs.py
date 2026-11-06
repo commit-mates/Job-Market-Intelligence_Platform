@@ -27,10 +27,9 @@ spark.sql("""
         MAX_EXPERIENCE INT COMMENT 'Maximum experience',
         SHIFT STRING COMMENT 'Job shift',
         JOB_TYPE STRING COMMENT 'Job type',
-        LOCATION STRING COMMENT 'Job location',
+        CITY STRING COMMENT 'Name of the city in which job is located',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
     USING DELTA
 """)
-

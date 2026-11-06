@@ -74,13 +74,13 @@ def fetch_unstop_jobs(url, num = 1):
             "title" : row['title'],
             "company_name" : row['organisation']['name'],
             "created_on" : row['regnRequirements']['start_regn_dt'],
-            "min_salary" : row["jobDetail"].get("min_salary"),
+            "min_salary" : row['jobDetail'].get("min_salary"),
             "max_salary" : row['jobDetail'].get('max_salary'),
             "min_experience" : row['jobDetail']['min_experience'],
             "max_experience" : row['jobDetail']['max_experience'],
             "expiry" : row['regnRequirements']['remain_days'],
             "job_type" :row['jobDetail']['timing'],
-            "location": ", ".join(loc["city"] for loc in row["locations"])
+            "location": ", ".join(loc["city"] for loc in row["locations"]),
         }
         payload_list.append(json.dumps(payload))
     return payload_list

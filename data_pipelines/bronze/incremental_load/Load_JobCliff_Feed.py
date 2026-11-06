@@ -58,7 +58,12 @@ def fetch_jobcliff_jobs(url, num = 1):
             "created_on" : row['postedDate'],
             "salary" : row['salary'],
             "job_type" :row['type'],
-            "location" : row['workingLocation']
+            "location" : row['workingLocation'],
+            "city": row['workingLocation'].split(',')[0].strip(),
+            "pincode":  (row['workingLocation'].split(',')[-1].strip() 
+                         if ',' in row['workingLocation'] else None),         
+            "latitude" : row['latitude'],
+            "longitude" : row['longitude'],
         }
         payload_list.append(json.dumps(payload))
     return payload_list
