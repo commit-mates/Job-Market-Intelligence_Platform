@@ -37,52 +37,5 @@ spark.sql("""
 
 # COMMAND ----------
 
-# MAGIC   %sql
-# MAGIC   select *,explode_outer(split(CITY, ',')) AS CITY 
-# MAGIC   from jobsintel.silver.joinsaarthi_jobs
-# MAGIC   where JOB_ID = '9fce351d-dcca-4742-b0cd-0dc49e50759c'
-
-# COMMAND ----------
-
 # MAGIC %sql
-# MAGIC select explode_outer(CITY) as city from jobsintel.silver.joinsaarthi_jobs
-# MAGIC where JOB_ID = '9fce351d-dcca-4742-b0cd-0dc49e50759c'
-# MAGIC
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC DESCRIBE TABLE jobsintel.silver.joinsaarthi_jobs
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC WITH parsed_locations AS (
-# MAGIC     SELECT
-# MAGIC         JOB_ID,
-# MAGIC         FROM_JSON(CITY, 'ARRAY<STRING>') AS city_array
-# MAGIC     FROM jobsintel.silver.unstop_jobs
-# MAGIC )
-# MAGIC
-# MAGIC SELECT
-# MAGIC     JOB_ID,
-# MAGIC     ci
-# MAGIC FROM parsed_locations
-# MAGIC LATERAL VIEW OUTER EXPLODE(city_array) AS exploded_city;
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC WITH parsed_locations AS (
-# MAGIC     SELECT
-# MAGIC         JOB_ID,
-# MAGIC         FROM_JSON(CITY, 'ARRAY<STRING>') AS city_array
-# MAGIC     FROM jobsintel.silver.joinsaarthi_jobs
-# MAGIC     WHERE JOB_ID = '9fce351d-dcca-4742-b0cd-0dc49e50759c'
-# MAGIC )
-# MAGIC
-# MAGIC SELECT
-# MAGIC     JOB_ID,
-# MAGIC     TRIM(exploded_city) AS CITY
-# MAGIC FROM parsed_locations
-# MAGIC LATERAL VIEW OUTER EXPLODE(city_array) AS exploded_city;
+# MAGIC select * from jobsintel.silver.joinsaarthi_jobs

@@ -84,4 +84,3 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.joinsaarthi_jobs")
     .whenNotMatchedInsertAll()
     .execute()
 )
-

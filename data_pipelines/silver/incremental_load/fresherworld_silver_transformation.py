@@ -48,6 +48,7 @@ fresherworld_silver_df = fresherworld_bronze_df.select(
         get_json_object(col("PAYLOAD"), '$.salary').alias("SALARY"),
         get_json_object(col("PAYLOAD"), '$.job_desc').alias("JOB_DESC"),
         get_json_object(col("PAYLOAD"), '$.skills').alias("SKILLS"),
+        get_json_object(col("PAYLOAD"), '$.posted_on').alias("CREATED_ON"),
         col("BD_CREATE_DT_TM"),
         col("BD_UPDATE_DT_TM")
 )
@@ -72,10 +73,10 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.fresherworld_jobs")
             SOURCE.EXPERIENCE != TARGET.EXPERIENCE OR
             SOURCE.SALARY != TARGET.SALARY OR
             SOURCE.JOB_DESC != TARGET.JOB_DESC OR
-            SOURCE.SKILLS != TARGET.SKILLS 
+            SOURCE.SKILLS != TARGET.SKILLS OR
+            SOURCE.CREATED_ON != TARGET.CREATED_ON
         """
     )
     .whenNotMatchedInsertAll()
     .execute()
 )
-

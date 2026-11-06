@@ -24,7 +24,8 @@ spark.sql("""
         EXPERIENCE STRING COMMENT 'experience of the candidate',
         SALARY STRING COMMENT 'salary of the candidate',
         JOB_DESC STRING COMMENT 'Job description',
-        SKILLS STRING COMMENT 'skills',       
+        SKILLS STRING COMMENT 'skills',
+        CREATED_ON TIMESTAMP COMMENT 'Timestamp created',
         BD_CREATE_DT_TM TIMESTAMP COMMENT 'Timestamp loaded',
         BD_UPDATE_DT_TM TIMESTAMP COMMENT 'Timestamp updated'
     )
@@ -35,4 +36,4 @@ spark.sql("""
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from  jobsintel.silver.fresherworld_jobs
+# MAGIC SELECT * FROM  jobsintel.silver.fresherworld_jobs

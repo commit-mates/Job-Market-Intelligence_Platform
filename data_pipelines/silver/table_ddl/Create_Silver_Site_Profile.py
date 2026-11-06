@@ -16,7 +16,7 @@
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS jobsintel.silver.site_profile (
-        SITE_NBR BIGINT GENERATED ALWAYS AS IDENTITY COMMENT 'Surrogate key uniquely identifying each location record',
+        SITE_NBR BIGINT  COMMENT 'Surrogate key uniquely identifying each location record',
         CITY STRING  COMMENT "Standardized city name derived from raw job location data",
         STATE STRING  COMMENT "State in which the city is located",
         PINCODE BIGINT  COMMENT "Pincode of the location",
@@ -29,4 +29,4 @@ spark.sql("""
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from  jobsintel.silver.site_profile;
+# MAGIC select * from jobsintel.silver.site_profile;

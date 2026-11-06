@@ -37,4 +37,4 @@ spark.sql("""
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from jobsintel.silver.jobcliff_jobs  where JOB_ID = '1234'
+# MAGIC select * from jobsintel.silver.jobcliff_jobs where job_id = 1436

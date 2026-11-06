@@ -99,10 +99,9 @@ targetDF = DeltaTable.forName(spark, "jobsintel.silver.apna_jobs")
             SOURCE.STATE != TARGET.STATE OR
             SOURCE.PINCODE != TARGET.PINCODE OR
             SOURCE.LATITUDE != TARGET.LATITUDE OR
-            SOURCE.LONGITUDE != TARGET.LONGITUDE  
+            SOURCE.LONGITUDE != TARGET.LONGITUDE 
         """
     )
     .whenNotMatchedInsertAll()
     .execute()
 )
-

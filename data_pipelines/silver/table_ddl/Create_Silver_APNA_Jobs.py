@@ -47,5 +47,27 @@ spark.sql("""
 
 # COMMAND ----------
 
+from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+
+apna_bronze_df = spark.table("jobsintel.bronze.raw_apna_jobs")
+apna_window = Window.partitionBy(
+    F.to_date("created_on")
+).orderBy("city")
+
+apna_test_df = apna_bronze_df.withColumn(
+    "site_nbr",
+    F.concat(
+        F.date_format(F.to_date("created_on"), "yyyyMMdd"),
+        F.lpad(
+            F.row_number().over(apna_window).cast("string"),
+            2,
+            "0"
+        )
+    )
+)
+
+# COMMAND ----------
+
 # MAGIC %sql
-# MAGIC select * from jobsintel.silver.apna_jobs
+# MAGIC select * from  jobsintel.silver.apna_jobs

@@ -60,7 +60,8 @@ def fetch_jobcliff_jobs(url, num = 1):
             "job_type" :row['type'],
             "location" : row['workingLocation'],
             "city": row['workingLocation'].split(',')[0].strip(),
-            "pincode": row['workingLocation'].split(',')[-1].strip(),
+            "pincode":  (row['workingLocation'].split(',')[-1].strip() 
+                         if ',' in row['workingLocation'] else None),         
             "latitude" : row['latitude'],
             "longitude" : row['longitude'],
         }

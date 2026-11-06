@@ -12,3 +12,8 @@ spark.sql("""
     )
     USING DELTA
 """)
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from jobsintel.bronze.raw_jobcliff_jobs where payload:job_id = 1436
