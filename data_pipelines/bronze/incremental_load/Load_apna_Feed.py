@@ -51,7 +51,7 @@ def fetch_apna_jobs(url, num = 1):
     jobs_list = response.json()["results"]["jobs"]
 
     for row in jobs_list:
-                payload_list.append(json.dumps(row))
+            payload_list.append(json.dumps(row))
     return payload_list
 
 # COMMAND ----------
