@@ -22,6 +22,7 @@
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
 # MAGIC | Aug 14th 2026| Sahithi Gudivada  | Created Initial Version|
+# MAGIC | Nov 11th 2026| Sahithi Gudivada  | Stored entire data into the payload|
 
 # COMMAND ----------
 
@@ -60,22 +61,7 @@ def fetch_joinsaarthi_jobs(url, num = 1):
     jobs_list = response.json()
 
     for row in jobs_list:
-        payload = {
-            "job_id" : row['id'],
-            "title" : row['title'],
-            "company_id" : row['company']['id'],
-            "company_name" : row['company']['name'],
-            "created_on" : row['posted_at'],
-            "expiry" : row['application_deadline'],
-            "min_salary" : row['ctc_min'],
-            "max_salary" : row['ctc_max'],
-            "experience" : row['yoe'],
-            "shift" : row['work_mode'],
-            "job_type" :row['job_type'],
-            "location" : row['company']['location'],
-            "created_on" : row["posted_at"]
-        }
-        payload_list.append(json.dumps(payload))
+        payload_list.append(json.dumps(row))
     return payload_list
 
 # COMMAND ----------
