@@ -21,6 +21,7 @@
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
 # MAGIC | Jun 3rd 2026| Sahithi Gudivada  | Created Initial Version|
+# MAGIC | Nov 11th 2026| Sahithi Gudivada  | Migrated to type script compatible version|
 
 # COMMAND ----------
 
@@ -49,10 +50,10 @@ headers = {
 # Define the Empty List
 payload_list = []
 job_list = []
+job_payloads = []
 
 # COMMAND ----------
 
-# DBTITLE 1,Define a function to get list of Job URLs
 def get_freshersworld_job_urls(url, num):
     response = requests.get(f"{url}?&offset={num}", headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -69,45 +70,86 @@ def get_freshersworld_job_urls(url, num):
 
 # COMMAND ----------
 
-# DBTITLE 1,Define a function to Fetch response from Freshersworld web
-def fetch_freshersworld_jobs(job_list):
-    for URL in job_list :
-        response = requests.get(URL, headers=headers)
-        soup = BeautifulSoup(response.text, "html.parser")
+def remove_key_recursive(data, key_to_remove):
 
-        job_id = URL.split("-")[-1]
-        title = soup.select_one(".job-role h2")
-        company = soup.select_one(".company-name span")
-        job_desc = soup.select_one(".job-desc")
-        skills = soup.select_one(".skills-detail")
-        location = soup.select_one(".job-location a")
-        experience = soup.select_one("div.job-details-sub-div span.space")
-        salary = soup.select_one(" div.salary div.job-details-sub-div span.space")
-        posted_on = soup.select_one("div.posted_on span")
-
-        payload = {
-            "job_id": job_id,
-            "job_url" : URL,
-            "title": title.get_text(strip=True) if title else None,
-            "job_desc" : job_desc.get_text(separator="\n", strip=True) if job_desc else None,
-            "company": company.get_text(strip=True) if company else None,
-            "location": location.get_text(strip=True) if location else None,
-            "experience": experience.get_text(strip=True) if experience else None,
-            "salary" : salary.get_text(strip=True) if salary else None,
-            "skills": skills.get_text(separator=", ", strip=True) if skills else None,
-            "posted_on": posted_on.get_text(strip=True) if posted_on else None
+    if isinstance(data, dict):
+        return {
+            key: remove_key_recursive(value, key_to_remove)
+            for key, value in data.items()
+            if key != key_to_remove
         }
 
-        payload_list.append(json.dumps(payload))
-    return payload_list
+    elif isinstance(data, list):
+        return [
+            remove_key_recursive(item, key_to_remove)
+            for item in data
+        ]
+
+    return data
 
 # COMMAND ----------
 
-# DBTITLE 1,Call the Function
-for num in range(0, 101, 20):
-    job_list.extend(get_freshersworld_job_urls(URL, num))
+def fetch_jobposting_data(url):
+    response = requests.get(url, headers=headers, timeout=30)
+    response.raise_for_status()
 
-val = [(x,) for x in fetch_freshersworld_jobs(job_list)]
+    soup = BeautifulSoup(response.text, "html.parser")
+    scripts = soup.find_all("script", type="application/ld+json")
+
+    url_payload_list = []
+
+    for script in scripts:
+        try:
+            data = json.loads(script.string or script.get_text())   
+            if isinstance(data, dict):
+                job_postings = [data]
+                if "@graph" in data:
+                    job_postings = data["@graph"]
+            elif isinstance(data, list):
+                job_postings = data
+            else:
+                continue
+
+            for job in job_postings:
+                if not isinstance(job, dict):
+                    continue
+                if job.get("@type") != "JobPosting":
+                    continue
+                job_id = str(job.get("identifier", {}).get("value", ""))
+
+                if not job_id or job_id in seen_job_ids:
+                    continue
+                seen_job_ids.add(job_id)
+                job = remove_key_recursive(job, "@context")
+                job = remove_key_recursive(job, "@type")
+
+                url_payload_list.append(json.dumps(job, ensure_ascii=False))
+        except (json.JSONDecodeError, TypeError):
+            continue
+
+    return url_payload_list
+
+# COMMAND ----------
+
+job_url_set = set()
+seen_job_ids = set()
+
+for num in range(0, 101, 20):
+    job_urls = get_freshersworld_job_urls(URL, num)
+    job_url_set.update(job_urls)
+job_list = list(job_url_set)
+
+for job_url in job_list:
+    try:
+        job_payloads.extend(fetch_jobposting_data(job_url))
+
+    except requests.RequestException as e:
+            print(f"Failed URL: {job_url} | Error: {e}")
+
+
+# COMMAND ----------
+
+val = [(payload,) for payload in job_payloads]
 
 # COMMAND ----------
 
