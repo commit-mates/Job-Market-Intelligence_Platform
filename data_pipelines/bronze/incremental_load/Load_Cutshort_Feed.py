@@ -49,22 +49,49 @@ headers = {
 # Define the Empty List 
 payload_list = []
 job_list = []
+session = requests.Session()
+session.headers.update(headers)
+
+# COMMAND ----------
+
+def extract_job_data(soup):
+
+    extracted_jobs = []
+    for script in soup.find_all("script"):
+        script_type = script.get("type", "").lower()
+        if script_type not in ("application/json","application/ld+json"):
+            continue
+
+        try:
+            script_data = json.loads(
+                script.string or script.get_text()
+            )
+            jobs = find_job_objects(script_data)
+            extracted_jobs.extend(jobs)
+        except (json.JSONDecodeError, TypeError):
+            continue
+
+    return extracted_jobs
 
 # COMMAND ----------
 
 # DBTITLE 1,Define a function to get list of Job URLs
-
 def fetch_cutshort_job_list(url):
     response = requests.get(url, headers=headers, timeout=10)
     response.raise_for_status()
-
+    
     # Extract the Reponse
     soup = BeautifulSoup(response.text, "html.parser")
+    scripts = soup.find_all("script", type="application/ld+json")
+    for script in scripts:
+        try:
+            data = json.loads(script.string or script.get_text())
+            if data.get("@type") == "ItemList":
+                for item in data.get("itemListElement", []):
+                    job_list.append(item.get("url"))
+        except json.JSONDecodeError:
+            continue
 
-    for card in soup.select("div.sc-8f06d440-0.ciLipX"):
-        title = card.select_one("a.dIKnux")
-        href = title.get("href", "") if title else ""
-        job_list.append(href)
     return job_list
 
 # COMMAND ----------
@@ -73,49 +100,47 @@ def fetch_cutshort_job_list(url):
 
 jobs = fetch_cutshort_job_list(URL)
 
+
+# COMMAND ----------
+
+def find_job_objects(data):
+    jobs = []
+    if isinstance(data, dict):
+        if (data.get("publicUrl") and data.get("headline")):
+            jobs.append(data)
+        for value in data.values():
+            jobs.extend(find_job_objects(value))
+
+    elif isinstance(data, list):
+        for item in data:
+            jobs.extend(find_job_objects(item))
+
+    return jobs
+
 # COMMAND ----------
 
 # DBTITLE 1,Define a function to Fetch response from Cutshort web
 def get_cutshort_job(jobs):
+
     for url in jobs:
-        if url :
-            response = requests.get(url, headers=headers, timeout=10)
+        if not url:
+            continue
+        try:
+            response = session.get(url, timeout=15)
             response.raise_for_status()
 
-            # Extract the Reponse
-            soup = BeautifulSoup(response.text, "html.parser")
+            soup = BeautifulSoup(response.text,"html.parser")
+            extracted_jobs = extract_job_data(soup)
 
-            title = soup.select_one("h1.bMdtwg")
-            company = soup.select_one(".cfBBKA a") if soup.select_one(".cfBBKA a") else soup.select_one(".fSEpsP a")
-            company_url = soup.select_one(".cfBBKA a") if soup.select_one(".cfBBKA a") else soup.select_one(".fSEpsP a")
-            job_url = url
-            job_id = url.rsplit("-", 1)[-1]
-            details = [
-                    s.get_text(strip=True)
-                    for s in soup.select("div.hZbKiR")
-                ]
-            experience = details[0] if details else None
-            salary = details[1] if details else None
-            location = details[2] if details else None
-            skills = [
-                    s.get_text(strip=True)
-                    for s in soup.select("div.sc-c52be3c1-15 span")
-                ]
-            job_desc = soup.select_one(".sc-54ec2143-2")
+            if extracted_jobs:
+                for job in extracted_jobs:
+                    payload_list.append(json.dumps(job,ensure_ascii=False))
+            else:
+                print(f"No embedded job JSON found: {url}")
 
-            payload = {
-                "job_id": job_id if job_id else None,
-                "title": title.get_text(strip=True) if title else None,
-                "job_url": job_url if job_url else None,
-                "company_name": company.get_text(strip=True) if company else None,
-                "company_url": company_url.get("href") if company else None,
-                "location": location if location else None,
-                "experience": experience if experience else None,
-                "salary": salary if salary else None,
-                "job_desc" : job_desc.get_text(strip = True, separator = "\n") if job_desc else None,
-                "skills" : ", ".join(skills) if skills else None
-            }
-            payload_list.append(json.dumps(payload, ensure_ascii=False))
+        except requests.RequestException as e:
+            print(f"Failed to fetch {url}: {e}")
+
     return payload_list
 
 # COMMAND ----------
