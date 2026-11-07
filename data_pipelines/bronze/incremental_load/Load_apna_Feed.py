@@ -21,6 +21,7 @@
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
 # MAGIC | May 30th 2026| Sahithi Gudivada  | Created Initial Version|
+# MAGIC | Nov 11th 2026| Sahithi Gudivada  | Stored entire data into the payload|
 
 # COMMAND ----------
 
@@ -41,7 +42,6 @@ payload_list = []
 
 # COMMAND ----------
 
-# DBTITLE 1,Define a function to Fetch response from APNA Jobs
 def fetch_apna_jobs(url, num = 1):
     response = requests.get(url + f"?page={num}&page_size=25", timeout = 90)
 
@@ -51,31 +51,7 @@ def fetch_apna_jobs(url, num = 1):
     jobs_list = response.json()["results"]["jobs"]
 
     for row in jobs_list:
-        payload = {
-            "job_id" : row['id'],
-            "title" : row['title'],
-            "company_id" : row['organization']['id'],
-            "company_name" : row['organization']['name'],
-            "created_on" : row['created_on'],
-            "last_updated" : row['last_updated'],
-            "expiry" : row['expiry'],
-            "department_id" : row['department']['id'],
-            "department" : row['department']['name'],
-            "min_salary" : row['min_salary'],
-            "max_salary" : row['max_salary'],
-            "min_experience" : row['min_experience'],
-            "max_experience" : row['max_experience'],
-            "shift" : row['shift'],
-            "application_url" : row['public_url_v2'],
-            "location" : row['location_name'],
-            "location_id" : row['address']['area_id'],
-            "city" : row['address']['city']['name'],
-            "state" : row['address']['city']['json_data']['state'],
-            "pincode": row['address']['city']['mid_area']['json_data'].get('pincode'),
-            "latitude" : row['address']["latitude"],
-            "longitude" : row['address']["longitude"]
-        }
-        payload_list.append(json.dumps(payload))
+                payload_list.append(json.dumps(row))
     return payload_list
 
 # COMMAND ----------
@@ -84,7 +60,6 @@ def fetch_apna_jobs(url, num = 1):
 # As per the requirement, we are targetting to capture around 100 jobs
 for num in range(1, 5):
     val = fetch_apna_jobs(URL, num)
-
 
 # COMMAND ----------
 

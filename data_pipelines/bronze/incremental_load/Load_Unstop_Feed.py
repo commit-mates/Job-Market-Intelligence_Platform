@@ -22,6 +22,7 @@
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
 # MAGIC | Aug 8th 2026| Sahithi Gudivada  | Created Initial Version|
+# MAGIC | Nov 11th 2026| Sahithi Gudivada  | Stored entire data into the payload|
 
 # COMMAND ----------
 
@@ -69,20 +70,7 @@ def fetch_unstop_jobs(url, num = 1):
     jobs_list = response.json()["data"]["data"]
 
     for row in jobs_list:
-        payload = {
-            "job_id" : row['id'],
-            "title" : row['title'],
-            "company_name" : row['organisation']['name'],
-            "created_on" : row['regnRequirements']['start_regn_dt'],
-            "min_salary" : row['jobDetail'].get("min_salary"),
-            "max_salary" : row['jobDetail'].get('max_salary'),
-            "min_experience" : row['jobDetail']['min_experience'],
-            "max_experience" : row['jobDetail']['max_experience'],
-            "expiry" : row['regnRequirements']['remain_days'],
-            "job_type" :row['jobDetail']['timing'],
-            "location": ", ".join(loc["city"] for loc in row["locations"]),
-        }
-        payload_list.append(json.dumps(payload))
+        payload_list.append(json.dumps(row))
     return payload_list
 
 # COMMAND ----------

@@ -22,6 +22,7 @@
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
 # MAGIC | Aug 5th 2026| Sahithi Gudivada  | Created Initial Version|
+# MAGIC | Nov 11th 2026| Sahithi Gudivada  | Stored entire data into the payload|
 
 # COMMAND ----------
 
@@ -51,21 +52,7 @@ def fetch_jobcliff_jobs(url, num = 1):
     jobs_list = response.json()["data"]
 
     for row in jobs_list:
-        payload = {
-            "job_id" : row['id'],
-            "title" : row['title'],
-            "company_name" : row['company'],
-            "created_on" : row['postedDate'],
-            "salary" : row['salary'],
-            "job_type" :row['type'],
-            "location" : row['workingLocation'],
-            "city": row['workingLocation'].split(',')[0].strip(),
-            "pincode":  (row['workingLocation'].split(',')[-1].strip() 
-                         if ',' in row['workingLocation'] else None),         
-            "latitude" : row['latitude'],
-            "longitude" : row['longitude'],
-        }
-        payload_list.append(json.dumps(payload))
+        payload_list.append(json.dumps(row))
     return payload_list
 
 # COMMAND ----------
