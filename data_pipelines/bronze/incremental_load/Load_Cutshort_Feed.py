@@ -21,6 +21,7 @@
 # MAGIC | Date         | Modified By      | Change Log             |
 # MAGIC |--------------|------------------|------------------------|
 # MAGIC | Aug 15th 2026| Sahithi Gudivada  | Created Initial Version|
+# MAGIC | NOV 07th 2026| Sahithi Gudivada  | Migrated to type script compatible version |
 
 # COMMAND ----------
 
